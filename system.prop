@@ -1,3 +1,12 @@
 # Radio
 rild.libargs=-d /dev/smd0
 rild.libpath=/system/lib/libsec-ril.so
+ro.ril.telephony.mqanelements=6
+ro.telephony.ril_class=trlteRIL
+ro.cdma.home.operator.numeric=310120
+ro.cdma.home.operator.alpha=Sprint
+telephony.lteOnCdmaDevice=1
+ro.telephony.default_network=10
+ro.telephony.ril.v3=newDriverCallU,newDialCode
+ril.subscription.types=NV,RUIM
+ro.telephony.default_cdma_sub=1
