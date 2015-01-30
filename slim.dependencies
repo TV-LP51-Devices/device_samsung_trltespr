@@ -35,7 +35,7 @@
     "branch": "lp5.0-caf-8084"
   },
   {
-    "repository": "slayher/android_kernel_samsung_trlte",
+    "repository": "CyanogenMod/android_kernel_samsung_trlte",
     "target_path": "kernel/samsung/trlte",
     "branch": "cm-12.0"
   }
