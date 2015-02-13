@@ -20,21 +20,6 @@
     "branch": "lp5.0"
   },
   {
-    "repository": "SlimRoms/hardware_qcom_audio-caf",
-    "target_path": "hardware/qcom/audio-caf/apq8084",
-    "branch": "lp5.0-caf-8084"
-  },
-  {
-    "repository": "SlimRoms/hardware_qcom_display-caf",
-    "target_path": "hardware/qcom/display-caf/apq8084",
-    "branch": "lp5.0-caf-8084"
-  },
-  {
-    "repository": "SlimRoms/hardware_qcom_media-caf",
-    "target_path": "hardware/qcom/media-caf/apq8084",
-    "branch": "lp5.0-caf-8084"
-  },
-  {
     "repository": "CyanogenMod/android_kernel_samsung_trlte",
     "target_path": "kernel/samsung/trlte",
     "branch": "cm-12.0"
