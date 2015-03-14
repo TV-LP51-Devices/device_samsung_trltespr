@@ -55,7 +55,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     if (strstr(bootloader, "N910R4")) {
         /* trlteusc */
         property_set("ro.build.fingerprint", "samsung/trlteusc/trlteusc:4.4.4/KTU84P/N910R4VPU1ANIE:user/release-keys");
-        property_set("ro.build.description", "trlteusc-user 4.4.4 KTU84P N910R4UVU1ANIH release-keys");
+        property_set("ro.build.description", "trlteusc-user 5.0.2 LRX22G N910R4UVU1ANIH release-keys");
         property_set("ro.product.model", "SM-N910R4");
         property_set("ro.product.device", "trlteusc");
         cdma_properties("0", "311580", "U.S.Cellular");
@@ -65,6 +65,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         property_set("ro.build.description", "trltespr-user 5.0.1 LRX22C N910PVPU1BOB7 release-keys");
         property_set("ro.product.model", "SM-N910P");
         property_set("ro.product.device", "trltespr");
+        property_set("telephony.sms.pseudo_multipart", "1");
         cdma_properties("1", "310120", "Sprint");
     }
 
@@ -73,12 +74,14 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     INFO("Found bootloader id %s setting build properties for %s device\n", bootloader, devicename);
 }
 
-void cdma_properties(char cdma_sub[], char op_numeric[], char op_alpha[])
+void cdma_properties(char default_cdma_sub[], char operator_numeric[],
+        char operator_alpha[])
 {
     property_set("ril.subscription.types", "NV,RUIM");
-    property_set("ro.cdma.home.operator.numeric", op_numeric);
-    property_set("ro.cdma.home.operator.alpha", op_alpha);
-    property_set("ro.telephony.default_cdma_sub", cdma_sub);
+    property_set("ro.cdma.home.operator.numeric", operator_numeric);
+    property_set("ro.cdma.home.operator.alpha", operator_alpha);
+    property_set("ro.telephony.default_cdma_sub", default_cdma_sub);
     property_set("ro.telephony.default_network", "10");
+    property_set("ro.telephony.ril.config", "newDriverCallU,newDialCode");
     property_set("telephony.lteOnCdmaDevice", "1");
 }
