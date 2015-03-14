@@ -46,8 +46,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.telephony.Rlog;
+import android.os.Message;
+import android.os.Parcel;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.SignalStrength;
+import com.android.internal.telephony.cdma.CdmaInformationRecords;
+import com.android.internal.telephony.cdma.CdmaInformationRecords.CdmaSignalInfoRec;
+import com.android.internal.telephony.cdma.SignalToneUtil;
 import com.android.internal.telephony.uicc.IccCardApplicationStatus;
 import com.android.internal.telephony.uicc.IccCardStatus;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * RIL customization for Galaxy Note 4 (CDMA) LTE devices
@@ -79,23 +89,25 @@ public class trlteRIL extends RIL {
         mQANElements = 6;
     }
 
+    private boolean mIsGsm = false;
+
+    public trlteRIL(Context context, int networkMode, int cdmaSubscription) {
+        super(context, networkMode, cdmaSubscription, null);
+        mQANElements = 6;
+    }
+
+    public trlteRIL(Context context, int preferredNetworkType,
+            int cdmaSubscription, Integer instanceId) {
+        super(context, preferredNetworkType, cdmaSubscription, instanceId);
+        mQANElements = 6;
+    }
+
     @Override
-    protected void notifyRegistrantsCdmaInfoRec(CdmaInformationRecords infoRec) {
-        final int response = RIL_UNSOL_CDMA_INFO_REC;
- 
-        if (infoRec.record instanceof CdmaSignalInfoRec) {
-            CdmaSignalInfoRec sir = (CdmaSignalInfoRec) infoRec.record;
-            if (sir != null
-                    && sir.isPresent
-                    && sir.signalType == SignalToneUtil.IS95_CONST_IR_SIGNAL_IS54B
-                    && sir.alertPitch == SignalToneUtil.IS95_CONST_IR_ALERT_MED
-                    && sir.signal == SignalToneUtil.IS95_CONST_IR_SIG_IS54B_L) {
- 
-                Rlog.d(RILJ_LOG_TAG, "Dropping \"" + responseToString(response) + " "
-                        + retToString(response, sir)
-                        + "\" to prevent \"ring of death\" bug.");
-                return;
-            }
+    public void
+    dial(String address, int clirMode, UUSInfo uusInfo, Message result) {
+        if (PhoneNumberUtils.isEmergencyNumber(address)) {
+            dialEmergencyCall(address, clirMode, result);
+            return;
         }
  
         super.notifyRegistrantsCdmaInfoRec(infoRec);
@@ -127,15 +139,27 @@ public class trlteRIL extends RIL {
  
         if (ignoreNitz) {
             if (RILJ_LOGD) riljLog("ignoring UNSOL_NITZ_TIME_RECEIVED");
+
+        RILRequest rr = RILRequest.obtain(RIL_REQUEST_DIAL, result);
+
+        rr.mParcel.writeString(address);
+        rr.mParcel.writeInt(clirMode);
+        rr.mParcel.writeInt(0);     // CallDetails.call_type
+        rr.mParcel.writeInt(1);     // CallDetails.call_domain
+        rr.mParcel.writeString(""); // CallDetails.getCsvFromExtras
+
+        if (uusInfo == null) {
+            rr.mParcel.writeInt(0); // UUS information is absent
         } else {
-            if (mNITZTimeRegistrant != null) {
-                mNITZTimeRegistrant
-                .notifyRegistrant(new AsyncResult (null, result, null));
-            } else {
-                // in case NITZ time registrant isnt registered yet
-                mLastNITZTimeInfo = result;
-            }
+            rr.mParcel.writeInt(1); // UUS information is present
+            rr.mParcel.writeInt(uusInfo.getType());
+            rr.mParcel.writeInt(uusInfo.getDcs());
+            rr.mParcel.writeByteArray(uusInfo.getUserData());
         }
+
+        if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+
+        send(rr);
     }
  
     @Override
@@ -387,6 +411,12 @@ public class trlteRIL extends RIL {
             int call_type = p.readInt();            // Samsung CallDetails
             int call_domain = p.readInt();          // Samsung CallDetails
             String csv = p.readString();            // Samsung CallDetails
+            if (mIsGsm) {
+                boolean isVideo = (0 != p.readInt());   // Samsung CallDetails
+                int call_type = p.readInt();            // Samsung CallDetails
+                int call_domain = p.readInt();          // Samsung CallDetails
+                String csv = p.readString();            // Samsung CallDetails
+            }
             dc.isVoicePrivacy = (0 != p.readInt());
             dc.number = p.readString();
             int np = p.readInt();
@@ -511,6 +541,60 @@ public class trlteRIL extends RIL {
                 super.processUnsolicited(p);
                 return;
         }
+
+        if (RILJ_LOGD)
+            riljLog("gsmSignalStrength:" + gsmSignalStrength + " gsmBitErrorRate:" + gsmBitErrorRate +
+                    " cdmaDbm:" + cdmaDbm + " cdmaEcio:" + cdmaEcio + " evdoDbm:" + evdoDbm +
+                    " evdoEcio: " + evdoEcio + " evdoSnr:" + evdoSnr +
+                    " lteSignalStrength:" + lteSignalStrength + " lteRsrp:" + lteRsrp +
+                    " lteRsrq:" + lteRsrq + " lteRssnr:" + lteRssnr + " lteCqi:" + lteCqi +
+                    " tdScdmaRscp:" + tdScdmaRscp + " isGsm:" + (mIsGsm ? "true" : "false"));
+
+        return new SignalStrength(gsmSignalStrength, gsmBitErrorRate, cdmaDbm, cdmaEcio, evdoDbm,
+                evdoEcio, evdoSnr, lteSignalStrength, lteRsrp, lteRsrq, lteRssnr, lteCqi,
+                tdScdmaRscp, mIsGsm);
     }
 
+    @Override
+    protected void notifyRegistrantsCdmaInfoRec(CdmaInformationRecords infoRec) {
+        final int response = RIL_UNSOL_CDMA_INFO_REC;
+
+        if (infoRec.record instanceof CdmaSignalInfoRec) {
+            CdmaSignalInfoRec rec = (CdmaSignalInfoRec) infoRec.record;
+            if (rec != null
+                    && rec.isPresent
+                    && rec.signalType == SignalToneUtil.IS95_CONST_IR_SIGNAL_IS54B
+                    && rec.alertPitch == SignalToneUtil.IS95_CONST_IR_ALERT_MED
+                    && rec.signal == SignalToneUtil.IS95_CONST_IR_SIG_IS54B_L) {
+                /* Drop record, otherwise IS95_CONST_IR_SIG_IS54B_L tone will
+                 * continue to play after the call is connected */
+                return;
+            }
+        }
+        super.notifyRegistrantsCdmaInfoRec(infoRec);
+    }
+
+    @Override
+    public void setPhoneType(int phoneType) {
+        super.setPhoneType(phoneType);
+        mIsGsm = (phoneType != RILConstants.CDMA_PHONE);
+    }
+
+    static final int RIL_REQUEST_DIAL_EMERGENCY = 10016;
+    private void
+    dialEmergencyCall(String address, int clirMode, Message result) {
+        RILRequest rr;
+        Rlog.v(RILJ_LOG_TAG, "Emergency dial: " + address);
+        rr = RILRequest.obtain(RIL_REQUEST_DIAL_EMERGENCY, result);
+        rr.mParcel.writeString(address);
+        rr.mParcel.writeInt(clirMode);
+        rr.mParcel.writeInt(0);        // CallDetails.call_type
+        rr.mParcel.writeInt(3);        // CallDetails.call_domain
+        rr.mParcel.writeString("");    // CallDetails.getCsvFromExtra
+        rr.mParcel.writeInt(0);        // Unknown
+
+        if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+
+        send(rr);
+    }
 }
