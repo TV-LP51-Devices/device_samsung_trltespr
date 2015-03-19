@@ -19,18 +19,16 @@ telephony.lteOnCdmaDevice=1
 telephony.sms.pseudo_multipart=1
 ro.telephony.default_network=10
 DEVICE_PROVISIONED=1
+persist.radio.no_wait_for_card=1
 persist.radio.always_send_plmn=true
 persist.radio.apm_sim_not_pwdn=1
 persist.radio.mode_pref_nv10=1
 persist.radio.snapshot_enabled=1
 persist.radio.snapshot_timer=22
+ro.config.multimode_cdma=1
 
 # Carrier definitions
-ro.cdma.home.operator.alpha=Sprint
-ro.cdma.home.operator.numeric=310120
-cdma.sim.operator.alpha=Sprint
-cdma.sim.operator.numeric=310120
-cdma.sim.operator.iso-country=us
-cdma.operator.alpha=Sprint
-cdma.operator.numeric=310120
-cdma.operator.iso-country=us
+
+# Chameleon Default Operator (SPR with Chameleon)
+ro.cdma.default_numeric=310000
+ro.cdma.default_alpha=Chameleon
