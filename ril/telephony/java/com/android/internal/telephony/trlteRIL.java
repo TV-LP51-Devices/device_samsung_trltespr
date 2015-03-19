@@ -104,7 +104,7 @@ public class trlteRIL extends RIL implements CommandsInterface {
         mQANElements = 6;
     }
     private AudioManager mAudioManager;
-    private boolean isGSM = false;
+    private boolean isCDMA = true;
     private boolean newril = needsOldRilFeature("newril"); //4.4.4 verson of Samsung RIL
     private Message mPendingGetSimStatus;
 
@@ -462,11 +462,10 @@ public class trlteRIL extends RIL implements CommandsInterface {
             p.readInt(); // - perso_unblock_retries
             cardStatus.mApplications[i] = appStatus;
         }
-        // for sprint gsm(lte) only sim
-        if (numApplications==1 && !isGSM && appStatus.app_type == appStatus.AppTypeFromRILInt(2)) {
-            cardStatus.mApplications = new IccCardApplicationStatus[numApplications+2];
-            cardStatus.mGsmUmtsSubscriptionAppIndex = 0;
-            cardStatus.mApplications[cardStatus.mGsmUmtsSubscriptionAppIndex]=appStatus;
+        // for sprint cdma(lte) only sim
+        if (numApplications==1 && !isCDMA && appStatus.app_type == appStatus.AppTypeFromRILInt(1)) {
+            cardStatus.mApplications = new IccCardApplicationStatus[numApplications+1];
+            cardStatus.mApplications[cardStatus.mCdmaSubscriptionAppIndex]=appStatus;
             cardStatus.mCdmaSubscriptionAppIndex = 1;
             cardStatus.mImsSubscriptionAppIndex = 2;
             IccCardApplicationStatus appStatus2 = new IccCardApplicationStatus();
@@ -504,8 +503,6 @@ public class trlteRIL extends RIL implements CommandsInterface {
         for (int i = 0; i < numInts; i++) {
             response[i] = p.readInt();
         }
-        //gsm
-        response[0] &= 0xff;
         //cdma
         response[2] %= 256;
         response[4] %= 256;
@@ -517,7 +514,7 @@ public class trlteRIL extends RIL implements CommandsInterface {
     @Override
     public void setPhoneType(int phoneType){
         super.setPhoneType(phoneType);
-        isGSM = (phoneType != RILConstants.CDMA_PHONE);
+        isCDMA = (phoneType != RILConstants.CDMA_PHONE);
     }
 
     protected Object
