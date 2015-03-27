@@ -69,7 +69,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         cdma_properties("1", "310120", "Sprint");
     }
 
-    property_get("ro.product.device", device);
+     property_get("ro.product.device", device);
     strlcpy(devicename, device, sizeof(devicename));
     INFO("Found bootloader id %s setting build properties for %s device\n", bootloader, devicename);
 }
@@ -82,6 +82,6 @@ void cdma_properties(char default_cdma_sub[], char operator_numeric[],
     property_set("ro.cdma.home.operator.alpha", operator_alpha);
     property_set("ro.telephony.default_cdma_sub", default_cdma_sub);
     property_set("ro.telephony.default_network", "10");
-    property_set("ro.telephony.ril.v3", "newDriverCallU,newDialCode");
+    property_set("ro.telephony.ril.config", "newDriverCallU,newDialCode");
     property_set("telephony.lteOnCdmaDevice", "1");
 }
