@@ -60,6 +60,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         property_set("ro.product.device", "trlteusc");
         cdma_properties("0", "311580", "U.S.Cellular");
     } else {
+    if (strstr(bootloader, "N910P")) {
         /* trltespr */
         property_set("ro.build.fingerprint", "samsung/trltespr/trltespr:5.0.1/LRX22C/N910PVPU1BOB7:user/release-keys");
         property_set("ro.build.description", "trltespr-user 5.0.1 LRX22C N910PVPU1BOB7 release-keys");
@@ -67,6 +68,7 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         property_set("ro.product.device", "trltespr");
         property_set("telephony.sms.pseudo_multipart", "1");
         cdma_properties("1", "310120", "Sprint");
+        cdma_properties("1", "310120", "Sprint")
     }
 
      property_get("ro.product.device", device);
@@ -74,8 +76,9 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     INFO("Found bootloader id %s setting build properties for %s device\n", bootloader, devicename);
 }
 
-void cdma_properties(char default_cdma_sub[], char operator_numeric[],
-        char operator_alpha[])
+    char default_cdma_sub[], 
+    char operator_numeric[],
+    char operator_alpha[]
 {
     property_set("ril.subscription.types", "NV,RUIM");
     property_set("ro.cdma.home.operator.numeric", operator_numeric);
