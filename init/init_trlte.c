@@ -68,7 +68,6 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         property_set("ro.product.device", "trltespr");
         property_set("telephony.sms.pseudo_multipart", "1");
         cdma_properties("1", "310120", "Sprint");
-        cdma_properties("1", "310120", "Sprint")
     }
 
      property_get("ro.product.device", device);
