@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Get the long list of APNs
+# Include our own list of APNs
 PRODUCT_COPY_FILES := device/samsung/trltespr/apns-conf.xml:system/etc/apns-conf.xml
 
 # Include our own GPS config
