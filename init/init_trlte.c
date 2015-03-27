@@ -76,9 +76,8 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
     INFO("Found bootloader id %s setting build properties for %s device\n", bootloader, devicename);
 }
 
-    char default_cdma_sub[], 
-    char operator_numeric[],
-    char operator_alpha[]
+void cdma_properties(char default_cdma_sub[], char operator_numeric[],
+        char operator_alpha[])
 {
     property_set("ril.subscription.types", "NV,RUIM");
     property_set("ro.cdma.home.operator.numeric", operator_numeric);
