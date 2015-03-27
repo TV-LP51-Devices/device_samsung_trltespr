@@ -33,3 +33,4 @@ ro.config.multimode_cdma=1
 ro.cdma.default_numeric=310000
 ro.cdma.default_alpha=Chameleon
 ro.ril.telephony.mqanelements=6
+ro.telephony.ril_class=trlteRIL
