@@ -34,4 +34,5 @@ ro.cdma.default_numeric=310000
 ro.cdma.default_alpha=Chameleon
 ro.ril.telephony.mqanelements=6
 ro.telephony.ril_class=trlteRIL
+ro.ril.telephony.mqanelements=6
 ro.telephony.default_cdma_sub
