@@ -12,12 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Include our own list of APNs
-PRODUCT_COPY_FILES := device/samsung/trltespr/apns-conf.xml:system/etc/apns-conf.xml
-
-# Include our own GPS config
-PRODUCT_COPY_FILES := device/samsung/trltespr/gps.conf:system/etc/gps.conf
-
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
