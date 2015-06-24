@@ -10,3 +10,5 @@ ro.telephony.default_network=10
 ro.telephony.ril.v3=newDriverCallU,newDialCode
 ril.subscription.types=NV,RUIM
 ro.telephony.default_cdma_sub=1
+
+ ro.product.device=trltespr
