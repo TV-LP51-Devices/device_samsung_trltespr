@@ -31,5 +31,4 @@ ro.config.multimode_cdma=1
 # Chameleon Default Operator (SPR with Chameleon)
 ro.cdma.default_numeric=310000
 ro.cdma.default_alpha=Chameleon
-ro.telephony.ril_class=trlteRIL
 ro.ril.telephony.mqanelements=6
