@@ -188,7 +188,6 @@ public class trlteRIL extends RIL {
     // drop it so it's never seen by CallNotifier. If other signal tones are
     // observed to cause this problem, they should be dropped here as well.
     
-        mQANElements = 6;
     @Override
     protected void notifyRegistrantsCdmaInfoRec(CdmaInformationRecords infoRec) {
         final int response = RIL_UNSOL_CDMA_INFO_REC;
@@ -854,8 +853,6 @@ public class trlteRIL extends RIL {
         return new SignalStrength(gsmSignalStrength, gsmBitErrorRate, cdmaDbm, cdmaEcio, evdoDbm,
                 evdoEcio, evdoSnr, lteSignalStrength, lteRsrp, lteRsrq, lteRssnr, lteCqi,
                 tdScdmaRscp, mIsGsm);
-    protected void
-    processUnsolicited (Parcel p) {
         Object ret;
         int dataPosition = p.dataPosition(); // save off position within the Parcel
         int response = p.readInt();
@@ -908,7 +905,6 @@ public class trlteRIL extends RIL {
 
     @Override
     protected void
-    processUnsolicited (Parcel p) {
         Object ret;
         int dataPosition = p.dataPosition(); // save off position within the Parcel
         int response = p.readInt();
@@ -938,5 +934,3 @@ public class trlteRIL extends RIL {
                 return;
         }
     }
-
-}
