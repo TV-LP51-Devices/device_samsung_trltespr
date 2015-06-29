@@ -16,6 +16,8 @@
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
+$(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-dalvik-heap.mk)
+
 # Get non-open-source specific aspects
 $(call inherit-product-if-exists, vendor/samsung/trltespr/trltespr-vendor.mk)
 
