@@ -24,6 +24,11 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 
+# Init
+TARGET_INIT_VENDOR_LIB := libinit_msm
+TARGET_LIBINIT_DEFINES_FILE := device/samsung/trltespr/init/init_trlte.c
+TARGET_UNIFIED_DEVICE := true
+
 # Radio
 BOARD_RIL_CLASS := ../../../device/samsung/trltespr/ril
 
