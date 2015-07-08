@@ -60,9 +60,9 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         property_set("ro.product.device", "trlteusc");
         cdma_properties("0", "311580", "U.S.Cellular");
     } else {
-        /* trltespr */      
-        property_set("ro.build.fingerprint", "samsung/trltespr/trltespr:5.0.1/LRX22C/N910PVPU2BOE1:user/release-keys");
-        property_set("ro.build.description", "trltespr-user 5.0.1 LRX22C N910PVPU2BOE1 release-keys");
+        /* trltespr */
+        property_set("ro.build.fingerprint", "samsung/trltespr/trltespr:5.0.1/LRX22C/N910PVPU1BOB7:user/release-keys");
+        property_set("ro.build.description", "trltespr-user 5.0.1 LRX22C N910PVPU1BOB7 release-keys");
         property_set("ro.product.model", "SM-N910P");
         property_set("ro.product.device", "trltespr");
         cdma_properties("1", "310120", "Sprint");
