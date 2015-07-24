@@ -1,36 +1,30 @@
 [
   {
-    "remote":      "github",
-    "repository": "Tesla-Redux-Devices/device_samsung_trlte-common",
+    "repository": "TV-LP51-Devices/device_samsung_trlte-common",
     "target_path": "device/samsung/trlte-common",
     "branch":  "lp5.1"
   },
   {
-    "remote":      "cm",
     "repository": "CyanogenMod/android_device_qcom_common",
     "target_path": "device/qcom/common",
     "branch":  "cm-12.1"
   },
   {
-    "remote":      "cm",
     "repository": "CyanogenMod/android_device_samsung_qcom-common",
     "target_path": "device/samsung/qcom-common",
     "branch":  "cm-12.1"
   },
   {
-    "remote":      "cm",
-    "repository": "Tesla-Redux-Devices/android_kernel_samsung_trlte",
+    "repository": "TV-LP51-Devices/android_kernel_samsung_trlte",
     "target_path": "kernel/samsung/trlte",
     "branch": "lp5.1"
   },
   {
-    "remote":      "cm",
     "repository": "CyanogenMod/android_hardware_samsung",
     "target_path": "hardware/samsung",
     "branch": "cm-12.1"
   },
   {
-    "remote":      "cm",
     "repository": "TheMuppets/proprietary_vendor_samsung",
     "target_path": "vendor/samsung",
     "branch": "cm-12.1"
